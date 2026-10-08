@@ -2,7 +2,7 @@ import { FiArrowRight } from "react-icons/fi";
 
 export default function Hero() {
     return (
-        <header className="relative flex min-h-screen items-center overflow-hidden bg-primary px-10 pb-16 pt-20 text-white lg:px-35">
+        <header className="relative flex min-h-0 items-center overflow-hidden bg-primary px-5 pb-12 pt-24 text-white sm:px-10 lg:min-h-screen lg:px-35 lg:pb-16 lg:pt-20">
             <div className="grid w-full items-center gap-12 lg:grid-cols-[1fr_1.15fr] lg:gap-6">
                 <div className="flex flex-col gap-8">
                     <span className="flex items-center gap-3">
@@ -41,7 +41,7 @@ export default function Hero() {
                     </div>
                 </div>
 
-                <div className="relative h-[min(65vh,650px)] w-full">
+                <div className="relative h-52 w-full sm:h-64 md:h-80 lg:h-[min(65vh,650px)]">
                     <div className="pointer-events-none absolute -right-10 -top-12 z-0 h-64 w-64 rounded-full border-[3px] border-secondary sm:h-80 sm:w-80 lg:h-104 lg:w-104" />
                     <img
                         src="https://res.cloudinary.com/dkgjwrjpv/image/upload/v1782485175/faxada_-_cita_jose_ruffino_vxgkqa.jpg"

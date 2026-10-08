@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import { FiArrowRight, FiChevronDown, FiChevronLeft, FiChevronRight } from "react-icons/fi";
 import { LuBath, LuBedDouble } from "react-icons/lu";
@@ -13,13 +13,32 @@ const filters = [
     { label: "Finalidade", name: "finalidade" },
 ];
 
-const PAGE_SIZE = 3;
+function getPageSize() {
+    if (typeof window === "undefined") return 3;
+    if (window.matchMedia("(min-width: 1024px)").matches) return 3;
+    if (window.matchMedia("(min-width: 768px)").matches) return 2;
+    return 1;
+}
 
 export default function Properties() {
+    const listRef = useRef<HTMLDivElement>(null);
     const [page, setPage] = useState(1);
+    const [pageSize, setPageSize] = useState(getPageSize);
     const total = properties.length;
-    const totalPages = Math.max(1, Math.ceil(total / PAGE_SIZE));
-    const visibleProperties = properties.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE);
+    const totalPages = Math.max(1, Math.ceil(total / pageSize));
+    const currentPage = Math.min(page, totalPages);
+    const visibleProperties = properties.slice((currentPage - 1) * pageSize, currentPage * pageSize);
+
+    useEffect(() => {
+        const update = () => setPageSize(getPageSize());
+        window.addEventListener("resize", update);
+        return () => window.removeEventListener("resize", update);
+    }, []);
+
+    const goToPage = (nextPage: number) => {
+        setPage(nextPage);
+        listRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+    };
 
     return (
         <section
@@ -82,7 +101,7 @@ export default function Properties() {
                 </p>
             </div>
 
-            <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
+            <div ref={listRef} className="grid scroll-mt-28 gap-8 md:grid-cols-2 lg:grid-cols-3">
                 {visibleProperties.map((property) => (
                     <Link
                         key={property.id}
@@ -140,8 +159,8 @@ export default function Properties() {
             <div className="mt-12 flex items-center justify-center gap-2">
                 <button
                     type="button"
-                    onClick={() => setPage((current) => Math.max(1, current - 1))}
-                    disabled={page === 1}
+                    onClick={() => goToPage(Math.max(1, currentPage - 1))}
+                    disabled={currentPage === 1}
                     aria-label="Página anterior"
                     className="flex h-10 w-10 items-center justify-center rounded-full border border-white/20 text-white transition hover:border-secondary hover:text-secondary disabled:cursor-not-allowed disabled:opacity-30"
                 >
@@ -149,12 +168,12 @@ export default function Properties() {
                 </button>
                 {Array.from({ length: totalPages }, (_, index) => {
                     const pageNumber = index + 1;
-                    const isActive = pageNumber === page;
+                    const isActive = pageNumber === currentPage;
                     return (
                         <button
                             key={pageNumber}
                             type="button"
-                            onClick={() => setPage(pageNumber)}
+                            onClick={() => goToPage(pageNumber)}
                             className={`flex h-10 min-w-10 items-center justify-center rounded-full px-3 text-sm font-medium transition ${
                                 isActive
                                     ? "bg-secondary text-white"
@@ -167,8 +186,8 @@ export default function Properties() {
                 })}
                 <button
                     type="button"
-                    onClick={() => setPage((current) => Math.min(totalPages, current + 1))}
-                    disabled={page === totalPages}
+                    onClick={() => goToPage(Math.min(totalPages, currentPage + 1))}
+                    disabled={currentPage === totalPages}
                     aria-label="Próxima página"
                     className="flex h-10 w-10 items-center justify-center rounded-full border border-white/20 text-white transition hover:border-secondary hover:text-secondary disabled:cursor-not-allowed disabled:opacity-30"
                 >

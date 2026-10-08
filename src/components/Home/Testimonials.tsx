@@ -114,7 +114,7 @@ export default function Testimonials() {
                     className="flex transition-transform duration-700 ease-[cubic-bezier(0.22,1,0.36,1)]"
                     style={{ transform: `translateX(-${index * (100 / perView)}%)` }}
                 >
-                    {testimonials.map((testimonial, offset) => (
+                    {testimonials.map((testimonial) => (
                         <div
                             key={testimonial.url}
                             className="box-border px-3"
@@ -124,7 +124,7 @@ export default function Testimonials() {
                             href={testimonial.url}
                             target="_blank"
                             rel="noreferrer"
-                            className="flex min-h-[260px] flex-col gap-5 rounded-2xl border border-white/10 bg-green p-8 transition duration-300 hover:border-white/20"
+                            className="flex min-h-65 flex-col gap-5 rounded-2xl border border-white/10 bg-green p-8 transition duration-300 hover:border-white/20"
                         >
                             <div className="flex items-center gap-1 text-secondary">
                                 {Array.from({ length: 5 }).map((_, star) => (
@@ -134,16 +134,9 @@ export default function Testimonials() {
                             <p className="text-base leading-relaxed text-white">
                                 “{testimonial.quote}”
                             </p>
-                            <div className="mt-auto flex items-center gap-3">
-                                <span
-                                    className={`flex h-11 w-11 shrink-0 rounded-full border-2 ${
-                                        offset % 2 === 1 ? "border-secondary" : "border-white/30"
-                                    }`}
-                                />
-                                <div>
-                                    <p className="text-sm font-semibold">{testimonial.name}</p>
-                                    <p className="text-xs text-gray">{testimonial.context}</p>
-                                </div>
+                            <div className="mt-auto">
+                                <p className="text-sm font-semibold">{testimonial.name}</p>
+                                <p className="text-xs text-gray">{testimonial.context}</p>
                             </div>
                         </a>
                         </div>

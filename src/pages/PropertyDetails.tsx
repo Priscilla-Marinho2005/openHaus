@@ -50,7 +50,7 @@ export default function PropertyDetails() {
                             <img
                                 src={images[imageIndex]}
                                 alt={`${property.name} - foto ${imageIndex + 1}`}
-                                className="h-[420px] w-full object-cover lg:h-[520px]"
+                                className="h-105 w-full object-cover lg:h-130"
                             />
                             <button
                                 type="button"
