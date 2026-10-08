@@ -136,7 +136,7 @@ export default function PropertyDetails() {
                     <h2 className="font-secondary mb-6 text-2xl font-bold tracking-tight uppercase">
                         Ficha técnica
                     </h2>
-                    <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+                    <div className="grid grid-cols-2 gap-4 lg:grid-cols-4">
                         {property.specs.map((spec) => (
                             <div
                                 key={spec.label}
