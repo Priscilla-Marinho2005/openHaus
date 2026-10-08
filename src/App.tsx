@@ -1,10 +1,17 @@
+import { BrowserRouter, Route, Routes } from "react-router-dom"
 import Index from "./pages/Index"
+import PropertyDetails from "./pages/PropertyDetails"
+import FloatingButton from "./components/UI/FloatingButton"
 
 function App() {
   return (
-    <>
-      <Index />
-    </>
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<Index />} />
+        <Route path="/imoveis/:slug" element={<PropertyDetails />} />
+      </Routes>
+      <FloatingButton />
+    </BrowserRouter>
   )
 }
 

@@ -51,7 +51,7 @@ export default function About() {
     return (
         <section
             id="about"
-            className="scroll-mt-28 bg-white px-10 py-24 text-primary lg:px-40"
+            className="scroll-mt-28 bg-primary px-10 py-24 text-white lg:px-40"
         >
             <div className="grid items-center gap-12 lg:grid-cols-2 lg:gap-16">
                 <div className="flex justify-center lg:justify-start">
@@ -71,13 +71,13 @@ export default function About() {
                         <span className="text-secondary">oportunidades</span>
                     </h2>
 
-                    <p className="max-w-lg text-base leading-relaxed text-gray-dark">
+                    <p className="max-w-lg text-base leading-relaxed text-gray">
                         A Open Haus Negócios Imobiliários nasceu para aproximar pessoas de
                         imóveis e empreendimentos escolhidos com critério. Não se trata só de
                         um endereço: cada oportunidade é avaliada pela localização, pelo
                         potencial e pelo estilo de vida de quem vai morar ou investir.
                     </p>
-                    <p className="max-w-lg text-base leading-relaxed text-gray-dark">
+                    <p className="max-w-lg text-base leading-relaxed text-gray">
                         Acompanhamos o cliente do primeiro contato à chave na mão, com
                         atendimento próximo, transparência e olhar estratégico para quem busca
                         viver melhor ou dar o próximo passo no mercado imobiliário.
@@ -89,16 +89,16 @@ export default function About() {
                             target="_blank"
                             rel="noreferrer"
                             aria-label="Instagram da Open Haus"
-                            className="flex h-11 w-11 items-center justify-center rounded-full bg-primary text-white transition hover:bg-secondary"
+                            className="flex h-11 w-11 items-center justify-center rounded-full bg-green text-white transition hover:bg-secondary"
                         >
                             <FaInstagram className="text-lg" />
                         </a>
                         <a
-                            href="https://wa.me/558185399988"
+                            href="https://wa.me/5581988398888"
                             target="_blank"
                             rel="noreferrer"
                             aria-label="WhatsApp da Open Haus"
-                            className="flex h-11 w-11 items-center justify-center rounded-full bg-primary text-white transition hover:bg-secondary"
+                            className="flex h-11 w-11 items-center justify-center rounded-full bg-green text-white transition hover:bg-secondary"
                         >
                             <FaWhatsapp className="text-lg" />
                         </a>

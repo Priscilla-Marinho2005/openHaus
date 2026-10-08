@@ -18,7 +18,7 @@ export default function Nav() {
                     : "border-b border-transparent bg-primary"
             }`}
         >
-            <div className="flex items-center gap-3">
+            <a href="/" className="flex items-center gap-3">
                 <p className="font-secondary text-[28px] font-extrabold leading-none tracking-tight">
                     H
                     <span className="text-orange">A</span>
@@ -29,22 +29,33 @@ export default function Nav() {
                     <br />
                     IMOBILIÁRIOS
                 </p>
-            </div>
+            </a>
 
             <ul className="flex items-center gap-10 text-sm font-medium text-gray">
                 <li>
-                    <a href="#about" className="transition hover:text-white">
+                    <a href="/#about" className="transition hover:text-white">
                         Sobre nós
                     </a>
                 </li>
                 <li>
-                    <a href="#imoveis" className="transition hover:text-white">
+                    <a href="/#imoveis" className="transition hover:text-white">
                         Imóveis
                     </a>
                 </li>
-                <li>Depoimentos</li>
-                <li className="rounded-md bg-secondary px-3.5 py-2 font-medium text-primary hover:text-white">
-                    Fale conosco
+                <li>
+                    <a href="/#depoimentos" className="transition hover:text-white">
+                        Depoimentos
+                    </a>
+                </li>
+                <li>
+                    <a
+                        href="https://wa.me/5581988398888"
+                        target="_blank"
+                        rel="noreferrer"
+                        className="rounded-md bg-secondary px-3.5 py-2 font-medium text-primary hover:text-white"
+                    >
+                        Fale conosco
+                    </a>
                 </li>
             </ul>
         </nav>

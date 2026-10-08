@@ -1,4 +1,9 @@
-import { FiArrowRight, FiChevronDown } from "react-icons/fi";
+import { useState } from "react";
+import { Link } from "react-router-dom";
+import { FiArrowRight, FiChevronDown, FiChevronLeft, FiChevronRight } from "react-icons/fi";
+import { LuBath, LuBedDouble } from "react-icons/lu";
+import { TbRulerMeasure } from "react-icons/tb";
+import { properties } from "../../data/properties";
 
 const filters = [
     { label: "Localização", name: "localizacao" },
@@ -8,38 +13,18 @@ const filters = [
     { label: "Finalidade", name: "finalidade" },
 ];
 
-const properties = [
-    {
-        badge: "Lançamento",
-        image: "https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?auto=format&fit=crop&w=1200&q=80",
-        location: "Recife · PE",
-        type: "Apartamentos",
-        name: "Haus Residence",
-        price: "A partir de R$ XXX.XXX",
-    },
-    {
-        badge: "Exclusivo",
-        image: "https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?auto=format&fit=crop&w=1200&q=80",
-        location: "Boa Viagem · PE",
-        type: "Alto padrão",
-        name: "Haus Prime",
-        price: "A partir de R$ X.XXX.XXX",
-    },
-    {
-        badge: "Oportunidade",
-        image: "https://images.unsplash.com/photo-1514565131-fce0801e5785?auto=format&fit=crop&w=1200&q=80",
-        location: "Olinda · PE",
-        type: "Investimento",
-        name: "Haus Skyline",
-        price: "A partir de R$ XXX.XXX",
-    },
-];
+const PAGE_SIZE = 3;
 
 export default function Properties() {
+    const [page, setPage] = useState(1);
+    const total = properties.length;
+    const totalPages = Math.max(1, Math.ceil(total / PAGE_SIZE));
+    const visibleProperties = properties.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE);
+
     return (
         <section
             id="imoveis"
-            className="scroll-mt-28 bg-primary px-10 py-20 text-white lg:px-50"
+            className="scroll-mt-28 bg-green px-10 py-20 text-white lg:px-50"
         >
             <form
                 className="mb-16 flex flex-col overflow-hidden rounded-xl bg-green text-white lg:flex-row"
@@ -89,16 +74,19 @@ export default function Properties() {
                         negócio.
                     </h2>
                 </div>
-                <p className="max-w-sm text-sm leading-relaxed text-gray lg:text-right">
-                    Uma seleção de empreendimentos e oportunidades para diferentes
-                    momentos, objetivos e estilos de vida.
+                <p className="lg:text-right">
+                    <span className="font-secondary text-5xl font-bold">{total}</span>
+                    <span className="ml-2 text-sm text-gray">
+                        {total === 1 ? "imóvel" : "imóveis"}
+                    </span>
                 </p>
             </div>
 
             <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
-                {properties.map((property) => (
-                    <article
-                        key={property.name}
+                {visibleProperties.map((property) => (
+                    <Link
+                        key={property.id}
+                        to={`/imoveis/${property.slug}`}
                         className="group flex min-h-130 cursor-pointer flex-col overflow-hidden rounded-2xl border border-white/10 bg-green/40 shadow-[0_8px_32px_rgba(0,0,0,0.25)] backdrop-blur-xl transition duration-300 hover:-translate-y-1 hover:border-white/20 hover:bg-green/50"
                     >
                         <div className="relative h-72 overflow-hidden">
@@ -125,16 +113,67 @@ export default function Properties() {
                                 <p className="mt-1 text-sm text-gray">{property.price}</p>
                             </div>
 
-                            <button
-                                type="button"
-                                className="mt-auto inline-flex items-center justify-between gap-2 text-xs font-semibold tracking-[0.12em] text-white uppercase"
-                            >
+                            <div className="flex items-center justify-center gap-12 text-sm text-gray">
+                                <span className="inline-flex items-center gap-1.5">
+                                    <LuBedDouble className="text-base text-secondary" />
+                                    {property.bedrooms}
+                                </span>
+                                <span className="inline-flex items-center gap-1.5">
+                                    <LuBath className="text-base text-secondary" />
+                                    {property.bathrooms}
+                                </span>
+                                <span className="inline-flex items-center gap-1.5">
+                                    <TbRulerMeasure className="text-base text-secondary" />
+                                    {property.area} m²
+                                </span>
+                            </div>
+
+                            <span className="mt-auto inline-flex items-center justify-between gap-2 text-xs font-semibold tracking-[0.12em] text-white uppercase">
                                 Conhecer {property.name}
                                 <FiArrowRight className="text-base text-secondary transition duration-300 group-hover:translate-x-1" />
-                            </button>
+                            </span>
                         </div>
-                    </article>
+                    </Link>
                 ))}
+            </div>
+
+            <div className="mt-12 flex items-center justify-center gap-2">
+                <button
+                    type="button"
+                    onClick={() => setPage((current) => Math.max(1, current - 1))}
+                    disabled={page === 1}
+                    aria-label="Página anterior"
+                    className="flex h-10 w-10 items-center justify-center rounded-full border border-white/20 text-white transition hover:border-secondary hover:text-secondary disabled:cursor-not-allowed disabled:opacity-30"
+                >
+                    <FiChevronLeft />
+                </button>
+                {Array.from({ length: totalPages }, (_, index) => {
+                    const pageNumber = index + 1;
+                    const isActive = pageNumber === page;
+                    return (
+                        <button
+                            key={pageNumber}
+                            type="button"
+                            onClick={() => setPage(pageNumber)}
+                            className={`flex h-10 min-w-10 items-center justify-center rounded-full px-3 text-sm font-medium transition ${
+                                isActive
+                                    ? "bg-secondary text-white"
+                                    : "border border-white/20 text-gray hover:border-secondary hover:text-white"
+                            }`}
+                        >
+                            {pageNumber}
+                        </button>
+                    );
+                })}
+                <button
+                    type="button"
+                    onClick={() => setPage((current) => Math.min(totalPages, current + 1))}
+                    disabled={page === totalPages}
+                    aria-label="Próxima página"
+                    className="flex h-10 w-10 items-center justify-center rounded-full border border-white/20 text-white transition hover:border-secondary hover:text-secondary disabled:cursor-not-allowed disabled:opacity-30"
+                >
+                    <FiChevronRight />
+                </button>
             </div>
         </section>
     );

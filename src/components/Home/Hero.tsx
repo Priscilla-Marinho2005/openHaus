@@ -23,13 +23,21 @@ export default function Hero() {
                     </p>
 
                     <div className="flex flex-wrap items-center gap-4">
-                        <button className="inline-flex items-center gap-2 rounded-md bg-secondary px-6 py-3.5 text-sm font-semibold uppercase tracking-wide text-primary transition hover:bg-orange">
+                        <a
+                            href="/#imoveis"
+                            className="inline-flex items-center gap-2 rounded-md bg-secondary px-6 py-3.5 text-sm font-semibold uppercase tracking-wide text-primary transition hover:bg-orange"
+                        >
                             Ver empreendimentos
                             <FiArrowRight className="text-base" />
-                        </button>
-                        <button className="rounded-md border border-gray px-6 py-3.5 text-sm font-semibold uppercase tracking-wide text-gray transition hover:bg-white/10">
+                        </a>
+                        <a
+                            href="https://wa.me/5581988398888"
+                            target="_blank"
+                            rel="noreferrer"
+                            className="rounded-md border border-gray px-6 py-3.5 text-sm font-semibold uppercase tracking-wide text-gray transition hover:bg-white/10"
+                        >
                             falar com um especialista
-                        </button>
+                        </a>
                     </div>
                 </div>
 
