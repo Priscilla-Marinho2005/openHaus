@@ -1,0 +1,41 @@
+@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@200..800&family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
+
+@import "tailwindcss";
+
+@theme {
+  /* =========================
+    CORES
+     ========================= */
+
+  --color-primary: #041E0F;
+  --color-secondary: #FF6600;
+  --color-orange: #D75302;
+  --color-green: #D75302;
+
+  /* Tons neutros */
+  --color-gray: #6B7280;
+  --color-gray-light: #F3F4F6;
+  --color-gray-dark: #374151;
+
+  --color-white: #FFFFFF;
+  --color-black: #000000;
+
+
+  /* =========================
+    FONTES
+     ========================= */
+
+  --font-primary: "Manrope", sans-serif;
+  --font-secondary: "Montserrat", sans-serif;
+}
+
+
+/* =========================
+  ESTILOS GLOBAIS
+   ========================= */
+
+@layer base {
+  html {
+    font-family: var(--font-primary);
+  }
+}
