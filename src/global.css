@@ -10,10 +10,10 @@
   --color-primary: #041E0F;
   --color-secondary: #FF6600;
   --color-orange: #D75302;
-  --color-green: #D75302;
+  --color-green: #0A3320;
 
   /* Tons neutros */
-  --color-gray: #6B7280;
+  --color-gray: #A8B0B8;
   --color-gray-light: #F3F4F6;
   --color-gray-dark: #374151;
 
@@ -27,6 +27,31 @@
 
   --font-primary: "Manrope", sans-serif;
   --font-secondary: "Montserrat", sans-serif;
+
+  --animate-jump: jump 0.9s cubic-bezier(0.34, 1.4, 0.64, 1) 0.25s both;
+}
+
+@keyframes jump {
+  0% {
+    transform: translateY(-70%) scale(0.7);
+    opacity: 0;
+  }
+  45% {
+    transform: translateY(0) scale(1.18);
+    opacity: 1;
+  }
+  62% {
+    transform: translateY(-22%) scale(0.96);
+  }
+  78% {
+    transform: translateY(0) scale(1.06);
+  }
+  90% {
+    transform: translateY(-8%) scale(1);
+  }
+  100% {
+    transform: translateY(0) scale(1);
+  }
 }
 
 
