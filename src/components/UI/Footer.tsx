@@ -6,10 +6,10 @@ export default function Footer() {
         <footer className="border-t border-white/10 bg-primary px-10 pt-16 text-white lg:px-25">
             <div className="grid gap-12 pb-16 sm:grid-cols-2 lg:grid-cols-[1.2fr_repeat(3,1fr)] lg:items-start">
                 <div className="flex items-center gap-3">
-                    <p className="font-secondary text-[28px] font-extrabold leading-none tracking-tight">
-                        H
-                        <span className="text-orange">A</span>
-                        US
+                    <p className="font-secondary text-[25px] font-medium leading-none tracking-tight text-green-light">
+                        OPEN{" "}
+                        <span className="text-orange">HAUS</span>
+
                     </p>
                     <span className="text-2xl font-light text-gray">|</span>
                     <p className="text-[11px] leading-[1.2] font-medium tracking-[0.14em] text-gray uppercase">
@@ -21,7 +21,7 @@ export default function Footer() {
 
                 <div>
                     <h3 className="mb-5 text-xs font-semibold tracking-[0.18em] text-secondary uppercase">
-                        Haus
+                        Open Haus
                     </h3>
                     <ul className="flex flex-col gap-3 text-sm text-gray">
                         <li>
@@ -109,7 +109,7 @@ export default function Footer() {
             </p>
 
             <div className="flex flex-col gap-3 border-t border-white/10 py-6 text-[11px] tracking-[0.12em] text-gray uppercase sm:flex-row sm:items-center sm:justify-between">
-                <p>Open Haus negocios imobiliários</p>
+                <p>Open Haus negócios imobiliários</p>
                 <p>© 2026 todos os direitos reservados.</p>
             </div>
         </footer>

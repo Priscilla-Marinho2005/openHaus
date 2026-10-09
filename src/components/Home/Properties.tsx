@@ -90,7 +90,7 @@ export default function Properties() {
                     <h2 className="font-secondary max-w-xl text-4xl font-bold tracking-tight sm:text-5xl">
                         Encontre seu próximo
                         <br />
-                        negócio.
+                        imóvel.
                     </h2>
                 </div>
                 <p className="lg:text-right">

@@ -77,7 +77,7 @@ export default function Testimonials() {
                         </p>
                     </span>
                     <h2 className="font-secondary max-w-2xl text-4xl font-bold tracking-tight sm:text-5xl">
-                        Quem vive a experiência Haus.
+                        Quem vive a experiência Open Haus.
                     </h2>
                     <p className="flex items-center gap-2 text-sm text-gray">
                         <FaGoogle className="text-secondary" />

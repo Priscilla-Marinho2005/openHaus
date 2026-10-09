@@ -8,7 +8,7 @@ export default function Hero() {
                     <span className="flex items-center gap-3">
                         <span className="h-px w-10 shrink-0 bg-secondary"></span>
                         <h1 className="text-xs font-medium tracking-[0.22em] text-secondary uppercase">
-                            OPEN HAUS NEGOCIOS IMOBILIÁRIOS
+                            OPEN HAUS NEGÓCIOS IMOBILIÁRIOS
                         </h1>
                     </span>
 

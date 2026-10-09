@@ -5,7 +5,7 @@ export default function CTA() {
         <section id="contato" className="relative overflow-hidden border-t border-white/10 bg-primary px-10 py-28 text-center text-white lg:px-40">
             <div className="relative z-10 mx-auto flex max-w-3xl flex-col items-center gap-6">
                 <h2 className="font-secondary text-4xl font-bold tracking-tight uppercase sm:text-5xl lg:text-6xl">
-                    Seu próximo negócio
+                    Seu próximo imóvel
                     <br />
                     começa aqui.
                 </h2>
@@ -19,7 +19,7 @@ export default function CTA() {
                         rel="noreferrer"
                         className="inline-flex items-center gap-2 rounded-md bg-secondary px-6 py-3.5 text-sm font-semibold tracking-wide text-white uppercase transition hover:bg-orange"
                     >
-                        Falar com a Haus
+                        Falar com a Open Haus
                         <FiArrowRight className="text-base" />
                     </a>
                     <a

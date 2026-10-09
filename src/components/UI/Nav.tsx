@@ -44,10 +44,9 @@ export default function Nav() {
         >
             <div className="flex items-center justify-between px-5 py-5 sm:px-10 lg:px-25">
                 <a href="/" className="flex min-w-0 items-center gap-2 sm:gap-3" onClick={close}>
-                    <p className="font-secondary text-[22px] font-extrabold leading-none tracking-tight sm:text-[28px]">
-                        H
-                        <span className="text-orange">A</span>
-                        US
+                    <p className="font-secondary text-[22px] font-medium leading-none tracking-tight sm:text-[25px] text-green-light">
+                        OPEN{" "}
+                        <span className="text-orange">HAUS</span>
                     </p>
                     <p className="hidden text-[10px] leading-[1.2] font-medium tracking-[0.14em] text-gray uppercase sm:block sm:text-[11px]">
                         NEGÓCIOS
