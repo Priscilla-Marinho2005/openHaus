@@ -14,7 +14,7 @@ export default function CTA() {
                 </p>
                 <div className="mt-2 flex flex-wrap items-center justify-center gap-4">
                     <a
-                        href="https://wa.me/5581988398888"
+                        href="https://wa.me/558185399988"
                         target="_blank"
                         rel="noreferrer"
                         className="inline-flex items-center gap-2 rounded-md bg-secondary px-6 py-3.5 text-sm font-semibold tracking-wide text-white uppercase transition hover:bg-orange"

@@ -54,7 +54,7 @@ export default function Footer() {
                     <ul className="flex flex-col gap-3 text-sm text-gray">
                         <li>
                             <a
-                                href="https://wa.me/5581988398888"
+                                href="https://wa.me/558185399988"
                                 target="_blank"
                                 rel="noreferrer"
                                 className="transition hover:text-white"
@@ -92,7 +92,7 @@ export default function Footer() {
                         </li>
                         <li>
                             <a
-                                href="https://wa.me/5581988398888"
+                                href="https://wa.me/558185399988"
                                 target="_blank"
                                 rel="noreferrer"
                                 className="transition hover:text-white"

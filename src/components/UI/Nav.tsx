@@ -39,7 +39,7 @@ export default function Nav() {
             className={`fixed top-0 left-0 z-50 w-full text-white transition-all duration-300 ${
                 scrolled || open
                     ? "border-b border-white/10 bg-primary/80 backdrop-blur-md"
-                    : "border-b border-transparent bg-primary"
+                    : "border-b border-transparent bg-transparent"
             }`}
         >
             <div className="flex items-center justify-between px-5 py-5 sm:px-10 lg:px-25">
@@ -65,7 +65,7 @@ export default function Nav() {
                     ))}
                     <li>
                         <a
-                            href="https://wa.me/5581988398888"
+                            href="https://wa.me/558185399988"
                             target="_blank"
                             rel="noreferrer"
                             className="rounded-md bg-secondary px-3.5 py-2 font-medium text-primary hover:text-white"
@@ -119,7 +119,7 @@ export default function Nav() {
                     ))}
                     <li className="pt-2">
                         <a
-                            href="https://wa.me/5581988398888"
+                            href="https://wa.me/558185399988"
                             target="_blank"
                             rel="noreferrer"
                             onClick={close}
