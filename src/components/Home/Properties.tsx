@@ -1,9 +1,7 @@
-import { useEffect, useRef, useState } from "react";
-import { Link } from "react-router-dom";
-import { FiArrowRight, FiChevronDown, FiChevronLeft, FiChevronRight } from "react-icons/fi";
-import { LuBath, LuBedDouble } from "react-icons/lu";
-import { TbRulerMeasure } from "react-icons/tb";
-import { properties } from "../../data/properties";
+import { useEffect, useMemo, useRef, useState } from "react";
+import { FiChevronDown, FiChevronLeft, FiChevronRight } from "react-icons/fi";
+import { fetchCatalog, type CatalogCard } from "../../lib/catalog";
+import PropertyCard from "./PropertyCard";
 
 const filters = [
     { label: "Localização", name: "localizacao" },
@@ -20,14 +18,14 @@ function getPageSize() {
     return 1;
 }
 
-export default function Properties() {
+function CatalogGrid({ items }: { items: CatalogCard[] }) {
     const listRef = useRef<HTMLDivElement>(null);
     const [page, setPage] = useState(1);
     const [pageSize, setPageSize] = useState(getPageSize);
-    const total = properties.length;
+    const total = items.length;
     const totalPages = Math.max(1, Math.ceil(total / pageSize));
     const currentPage = Math.min(page, totalPages);
-    const visibleProperties = properties.slice((currentPage - 1) * pageSize, currentPage * pageSize);
+    const visible = items.slice((currentPage - 1) * pageSize, currentPage * pageSize);
 
     useEffect(() => {
         const update = () => setPageSize(getPageSize());
@@ -35,10 +33,98 @@ export default function Properties() {
         return () => window.removeEventListener("resize", update);
     }, []);
 
+    useEffect(() => {
+        setPage(1);
+    }, [items]);
+
     const goToPage = (nextPage: number) => {
         setPage(nextPage);
         listRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
     };
+
+    if (total === 0) return null;
+
+    return (
+        <>
+            <div ref={listRef} className="grid scroll-mt-28 gap-8 md:grid-cols-2 lg:grid-cols-3">
+                {visible.map((item) => (
+                    <PropertyCard key={`${item.kind}-${item.id}`} item={item} />
+                ))}
+            </div>
+            {totalPages > 1 ? (
+                <div className="mt-12 flex items-center justify-center gap-2">
+                    <button
+                        type="button"
+                        onClick={() => goToPage(Math.max(1, currentPage - 1))}
+                        disabled={currentPage === 1}
+                        aria-label="Página anterior"
+                        className="flex h-10 w-10 items-center justify-center rounded-full border border-white/20 text-white transition hover:border-secondary hover:text-secondary disabled:cursor-not-allowed disabled:opacity-30"
+                    >
+                        <FiChevronLeft />
+                    </button>
+                    {Array.from({ length: totalPages }, (_, index) => {
+                        const pageNumber = index + 1;
+                        const isActive = pageNumber === currentPage;
+                        return (
+                            <button
+                                key={pageNumber}
+                                type="button"
+                                onClick={() => goToPage(pageNumber)}
+                                className={`flex h-10 min-w-10 items-center justify-center rounded-full px-3 text-sm font-medium transition ${
+                                    isActive
+                                        ? "bg-secondary text-white"
+                                        : "border border-white/20 text-gray hover:border-secondary hover:text-white"
+                                }`}
+                            >
+                                {pageNumber}
+                            </button>
+                        );
+                    })}
+                    <button
+                        type="button"
+                        onClick={() => goToPage(Math.min(totalPages, currentPage + 1))}
+                        disabled={currentPage === totalPages}
+                        aria-label="Próxima página"
+                        className="flex h-10 w-10 items-center justify-center rounded-full border border-white/20 text-white transition hover:border-secondary hover:text-secondary disabled:cursor-not-allowed disabled:opacity-30"
+                    >
+                        <FiChevronRight />
+                    </button>
+                </div>
+            ) : null}
+        </>
+    );
+}
+
+export default function Properties() {
+    const [empreendimentos, setEmpreendimentos] = useState<CatalogCard[]>([]);
+    const [imoveis, setImoveis] = useState<CatalogCard[]>([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState<string | null>(null);
+
+    useEffect(() => {
+        let active = true;
+        fetchCatalog()
+            .then((catalog) => {
+                if (!active) return;
+                setEmpreendimentos(catalog.empreendimentos);
+                setImoveis(catalog.imoveis);
+            })
+            .catch(() => {
+                if (!active) return;
+                setError("Não foi possível carregar os imóveis agora.");
+            })
+            .finally(() => {
+                if (active) setLoading(false);
+            });
+        return () => {
+            active = false;
+        };
+    }, []);
+
+    const total = useMemo(
+        () => empreendimentos.length + imoveis.length,
+        [empreendimentos.length, imoveis.length],
+    );
 
     return (
         <section
@@ -94,106 +180,41 @@ export default function Properties() {
                     </h2>
                 </div>
                 <p className="lg:text-right">
-                    <span className="font-secondary text-5xl font-bold">{total}</span>
+                    <span className="font-secondary text-5xl font-bold">{loading ? "—" : total}</span>
                     <span className="ml-2 text-sm text-gray">
                         {total === 1 ? "imóvel" : "imóveis"}
                     </span>
                 </p>
             </div>
 
-            <div ref={listRef} className="grid scroll-mt-28 gap-8 md:grid-cols-2 lg:grid-cols-3">
-                {visibleProperties.map((property) => (
-                    <Link
-                        key={property.id}
-                        to={`/imoveis/${property.slug}`}
-                        className="group flex min-h-130 cursor-pointer flex-col overflow-hidden rounded-2xl border border-white/10 bg-green/40 shadow-[0_8px_32px_rgba(0,0,0,0.25)] backdrop-blur-xl transition duration-300 hover:-translate-y-1 hover:border-white/20 hover:bg-green/50"
-                    >
-                        <div className="relative h-72 overflow-hidden">
-                            <img
-                                src={property.image}
-                                alt={property.name}
-                                className="h-full w-full object-cover transition duration-500 group-hover:scale-[1.04]"
-                            />
-                            <span className="absolute top-4 left-4 rounded-full bg-green px-3.5 py-1.5 text-[10px] font-semibold tracking-[0.14em] text-white uppercase">
-                                {property.badge}
-                            </span>
+            {loading ? (
+                <p className="text-sm text-gray">Carregando catálogo...</p>
+            ) : error ? (
+                <p className="text-sm text-gray">{error}</p>
+            ) : total === 0 ? (
+                <p className="text-sm text-gray">
+                    Nenhum empreendimento publicado neste momento.
+                </p>
+            ) : (
+                <div className="flex flex-col gap-16">
+                    {empreendimentos.length > 0 ? (
+                        <div>
+                            <p className="mb-6 text-xs font-semibold tracking-[0.16em] text-secondary uppercase">
+                                Empreendimentos
+                            </p>
+                            <CatalogGrid items={empreendimentos} />
                         </div>
-
-                        <div className="flex flex-1 flex-col gap-5 bg-green/20 p-6">
-                            <div className="flex items-start justify-between gap-4 text-[11px] font-medium tracking-[0.12em] text-gray uppercase">
-                                <span>{property.location}</span>
-                                <span>{property.type}</span>
-                            </div>
-
-                            <div>
-                                <h3 className="font-secondary text-xl font-bold tracking-tight uppercase">
-                                    {property.name}
-                                </h3>
-                                <p className="mt-1 text-sm text-gray">{property.price}</p>
-                            </div>
-
-                            <div className="flex items-center justify-center gap-12 text-sm text-gray">
-                                <span className="inline-flex items-center gap-1.5">
-                                    <LuBedDouble className="text-base text-secondary" />
-                                    {property.bedrooms}
-                                </span>
-                                <span className="inline-flex items-center gap-1.5">
-                                    <LuBath className="text-base text-secondary" />
-                                    {property.bathrooms}
-                                </span>
-                                <span className="inline-flex items-center gap-1.5">
-                                    <TbRulerMeasure className="text-base text-secondary" />
-                                    {property.area} m²
-                                </span>
-                            </div>
-
-                            <span className="mt-auto inline-flex items-center justify-between gap-2 text-xs font-semibold tracking-[0.12em] text-white uppercase">
-                                Conhecer {property.name}
-                                <FiArrowRight className="text-base text-secondary transition duration-300 group-hover:translate-x-1" />
-                            </span>
+                    ) : null}
+                    {imoveis.length > 0 ? (
+                        <div id="usados">
+                            <p className="mb-6 text-xs font-semibold tracking-[0.16em] text-secondary uppercase">
+                                Imóveis vinculados
+                            </p>
+                            <CatalogGrid items={imoveis} />
                         </div>
-                    </Link>
-                ))}
-            </div>
-
-            <div className="mt-12 flex items-center justify-center gap-2">
-                <button
-                    type="button"
-                    onClick={() => goToPage(Math.max(1, currentPage - 1))}
-                    disabled={currentPage === 1}
-                    aria-label="Página anterior"
-                    className="flex h-10 w-10 items-center justify-center rounded-full border border-white/20 text-white transition hover:border-secondary hover:text-secondary disabled:cursor-not-allowed disabled:opacity-30"
-                >
-                    <FiChevronLeft />
-                </button>
-                {Array.from({ length: totalPages }, (_, index) => {
-                    const pageNumber = index + 1;
-                    const isActive = pageNumber === currentPage;
-                    return (
-                        <button
-                            key={pageNumber}
-                            type="button"
-                            onClick={() => goToPage(pageNumber)}
-                            className={`flex h-10 min-w-10 items-center justify-center rounded-full px-3 text-sm font-medium transition ${
-                                isActive
-                                    ? "bg-secondary text-white"
-                                    : "border border-white/20 text-gray hover:border-secondary hover:text-white"
-                            }`}
-                        >
-                            {pageNumber}
-                        </button>
-                    );
-                })}
-                <button
-                    type="button"
-                    onClick={() => goToPage(Math.min(totalPages, currentPage + 1))}
-                    disabled={currentPage === totalPages}
-                    aria-label="Próxima página"
-                    className="flex h-10 w-10 items-center justify-center rounded-full border border-white/20 text-white transition hover:border-secondary hover:text-secondary disabled:cursor-not-allowed disabled:opacity-30"
-                >
-                    <FiChevronRight />
-                </button>
-            </div>
+                    ) : null}
+                </div>
+            )}
         </section>
     );
 }

@@ -1,28 +1,96 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Link, Navigate, useParams } from "react-router-dom";
 import { FiArrowLeft, FiArrowRight, FiChevronLeft, FiChevronRight, FiMapPin } from "react-icons/fi";
 import { LuBath, LuBedDouble } from "react-icons/lu";
 import { TbRulerMeasure } from "react-icons/tb";
 import Nav from "../components/UI/Nav";
 import Footer from "../components/UI/Footer";
-import { getPropertyBySlug } from "../data/properties";
+import PropertyCard from "../components/Home/PropertyCard";
+import {
+    fetchEmpreendimento,
+    fetchImovel,
+    formatBRL,
+    formatLocation,
+    imovelIdFromSlug,
+    type CatalogCard,
+    type EmpreendimentoPublico,
+} from "../lib/catalog";
 
 export default function PropertyDetails() {
     const { slug } = useParams();
-    const property = slug ? getPropertyBySlug(slug) : undefined;
+    const imovelId = slug ? imovelIdFromSlug(slug) : null;
+    const [item, setItem] = useState<CatalogCard | EmpreendimentoPublico | null>(null);
+    const [loading, setLoading] = useState(true);
+    const [missing, setMissing] = useState(false);
     const [imageIndex, setImageIndex] = useState(0);
 
     useEffect(() => {
         window.scrollTo(0, 0);
-    }, [slug]);
+        if (!slug) {
+            setMissing(true);
+            setLoading(false);
+            return;
+        }
+        let active = true;
+        setLoading(true);
+        setMissing(false);
+        const request = imovelId ? fetchImovel(imovelId) : fetchEmpreendimento(slug);
+        request
+            .then((data) => {
+                if (!active) return;
+                setItem(data);
+                setImageIndex(0);
+            })
+            .catch(() => {
+                if (!active) return;
+                setItem(null);
+                setMissing(true);
+            })
+            .finally(() => {
+                if (active) setLoading(false);
+            });
+        return () => {
+            active = false;
+        };
+    }, [slug, imovelId]);
 
-    if (!property) {
+    const images = item?.imagens?.length ? item.imagens : [];
+    const mapsQuery = [item?.endereco, item?.localidade, item?.cidade].filter(Boolean).join(", ");
+    const mapsUrl = mapsQuery
+        ? `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(mapsQuery)}`
+        : null;
+    const whatsappUrl = item
+        ? `https://wa.me/558185399988?text=${encodeURIComponent(`Olá! Tenho interesse no ${item.nome}.`)}`
+        : "";
+    const linked = useMemo(
+        () => ("imoveis" in (item ?? {}) ? (item as EmpreendimentoPublico).imoveis ?? [] : []),
+        [item],
+    );
+    const vitrine = item && "vitrine" in item ? item.vitrine : null;
+    const plans = [
+        ...(vitrine?.plantas ?? []).map((image, index) => ({
+            title: `Planta ${index + 1}`,
+            image,
+        })),
+        ...(vitrine?.tipologias ?? [])
+            .filter((row) => row.plantaUrl)
+            .map((row) => ({ title: row.nome, image: row.plantaUrl as string })),
+    ];
+    const specs = item
+        ? [
+              { label: "Quartos", value: item.quartos != null ? String(item.quartos) : "—" },
+              { label: "Suítes", value: item.suites != null ? String(item.suites) : "—" },
+              { label: "Banheiros", value: item.banheiros != null ? String(item.banheiros) : "—" },
+              { label: "Vagas", value: item.vagas != null ? String(item.vagas) : "—" },
+              { label: "Área", value: item.areaM2 != null ? `${item.areaM2} m²` : "—" },
+              { label: "Tipo", value: item.tipo || "—" },
+              { label: "Status", value: item.status || item.badge },
+          ]
+        : [];
+
+    if (!loading && missing) {
         return <Navigate to="/#imoveis" replace />;
     }
-
-    const images = property.images.length ? property.images : [property.image];
-    const mapsUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(property.address)}`;
-    const whatsappUrl = `https://wa.me/5581988398888?text=${encodeURIComponent(`Olá! Tenho interesse no ${property.name}.`)}`;
 
     const prevImage = () => {
         setImageIndex((current) => (current === 0 ? images.length - 1 : current - 1));
@@ -44,14 +112,24 @@ export default function PropertyDetails() {
                     Voltar aos imóveis
                 </Link>
 
+                {loading || !item ? (
+                    <p className="text-sm text-gray">Carregando imóvel...</p>
+                ) : (
+                    <>
                 <div className="grid items-start gap-10 lg:grid-cols-[1.15fr_0.85fr]">
                     <div>
-                        <div className="relative overflow-hidden rounded-2xl">
-                            <img
-                                src={images[imageIndex]}
-                                alt={`${property.name} - foto ${imageIndex + 1}`}
-                                className="h-105 w-full object-cover lg:h-130"
-                            />
+                        <div className="relative overflow-hidden rounded-2xl bg-white/5">
+                            {images[imageIndex] ? (
+                                <img
+                                    src={images[imageIndex]}
+                                    alt={`${item.nome} - foto ${imageIndex + 1}`}
+                                    className="h-105 w-full object-cover lg:h-130"
+                                />
+                            ) : (
+                                <div className="h-105 w-full lg:h-130" />
+                            )}
+                            {images.length > 1 ? (
+                                <>
                             <button
                                 type="button"
                                 onClick={prevImage}
@@ -68,14 +146,17 @@ export default function PropertyDetails() {
                             >
                                 <FiChevronRight />
                             </button>
+                                </>
+                            ) : null}
                             <span className="absolute top-4 left-4 rounded-full bg-green px-3.5 py-1.5 text-[10px] font-semibold tracking-[0.14em] uppercase">
-                                {property.badge}
+                                {item.badge}
                             </span>
                         </div>
+                        {images.length > 1 ? (
                         <div className="mt-4 grid grid-cols-4 gap-3">
                             {images.map((image, index) => (
                                 <button
-                                    key={image}
+                                    key={`${image}-${index}`}
                                     type="button"
                                     onClick={() => setImageIndex(index)}
                                     className={`overflow-hidden rounded-xl border ${
@@ -86,16 +167,22 @@ export default function PropertyDetails() {
                                 </button>
                             ))}
                         </div>
+                        ) : null}
                     </div>
 
                     <div className="flex flex-col gap-6 rounded-2xl border border-white/10 bg-green/40 p-8 backdrop-blur-xl">
                         <span className="text-[11px] font-medium tracking-[0.14em] text-gray uppercase">
-                            {property.type}
+                            {item.tipo}
                         </span>
                         <h1 className="font-secondary text-4xl font-bold tracking-tight uppercase">
-                            {property.name}
+                            {item.nome}
                         </h1>
-                        <p className="text-2xl font-semibold text-secondary">{property.price}</p>
+                        <p className="text-2xl font-semibold text-secondary">
+                            {item.kind === "empreendimento" && item.valor != null
+                                ? `A partir de ${formatBRL(item.valor)}`
+                                : formatBRL(item.valor)}
+                        </p>
+                        {mapsUrl ? (
                         <a
                             href={mapsUrl}
                             target="_blank"
@@ -103,21 +190,29 @@ export default function PropertyDetails() {
                             className="inline-flex items-center gap-2 text-sm text-gray transition hover:text-white"
                         >
                             <FiMapPin className="text-secondary" />
-                            {property.location}
-                            <span className="text-white/50">· {property.address}</span>
+                            {formatLocation(item)}
+                            {item.endereco ? (
+                                <span className="text-white/50">· {item.endereco}</span>
+                            ) : null}
                         </a>
+                        ) : (
+                            <p className="inline-flex items-center gap-2 text-sm text-gray">
+                                <FiMapPin className="text-secondary" />
+                                {formatLocation(item)}
+                            </p>
+                        )}
                         <div className="flex items-center gap-8 text-sm text-gray">
                             <span className="inline-flex items-center gap-1.5">
                                 <LuBedDouble className="text-secondary" />
-                                {property.bedrooms} quartos
+                                {item.quartos ?? "—"} quartos
                             </span>
                             <span className="inline-flex items-center gap-1.5">
                                 <LuBath className="text-secondary" />
-                                {property.bathrooms} banheiros
+                                {item.banheiros ?? "—"} banheiros
                             </span>
                             <span className="inline-flex items-center gap-1.5">
                                 <TbRulerMeasure className="text-secondary" />
-                                {property.area} m²
+                                {item.areaM2 != null ? `${item.areaM2} m²` : "—"}
                             </span>
                         </div>
                         <a
@@ -137,7 +232,7 @@ export default function PropertyDetails() {
                         Ficha técnica
                     </h2>
                     <div className="grid grid-cols-2 gap-4 lg:grid-cols-4">
-                        {property.specs.map((spec) => (
+                        {specs.map((spec) => (
                             <div
                                 key={spec.label}
                                 className="rounded-xl border border-white/10 bg-green/30 px-5 py-4"
@@ -151,15 +246,26 @@ export default function PropertyDetails() {
                     </div>
                 </section>
 
-                {property.plans.length > 0 && (
+                {vitrine?.descricao ? (
+                    <section className="mt-16">
+                        <h2 className="font-secondary mb-6 text-2xl font-bold tracking-tight uppercase">
+                            Sobre
+                        </h2>
+                        <p className="max-w-3xl text-sm leading-relaxed text-gray whitespace-pre-line">
+                            {vitrine.descricao}
+                        </p>
+                    </section>
+                ) : null}
+
+                {plans.length > 0 && (
                     <section className="mt-16">
                         <h2 className="font-secondary mb-6 text-2xl font-bold tracking-tight uppercase">
                             Plantas do imóvel
                         </h2>
                         <div className="grid gap-6 md:grid-cols-2">
-                            {property.plans.map((plan) => (
+                            {plans.map((plan) => (
                                 <figure
-                                    key={plan.title}
+                                    key={`${plan.title}-${plan.image}`}
                                     className="overflow-hidden rounded-2xl border border-white/10 bg-green/30"
                                 >
                                     <img
@@ -174,6 +280,21 @@ export default function PropertyDetails() {
                             ))}
                         </div>
                     </section>
+                )}
+
+                {linked.length > 0 ? (
+                    <section className="mt-16">
+                        <h2 className="font-secondary mb-6 text-2xl font-bold tracking-tight uppercase">
+                            Imóveis vinculados
+                        </h2>
+                        <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
+                            {linked.map((unit) => (
+                                <PropertyCard key={unit.id} item={unit} />
+                            ))}
+                        </div>
+                    </section>
+                ) : null}
+                    </>
                 )}
             </main>
             <Footer />
