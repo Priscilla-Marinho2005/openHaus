@@ -6,17 +6,9 @@ export default function Footer() {
         <footer className="border-t border-white/10 bg-primary px-10 pt-16 text-white lg:px-25">
             <div className="grid gap-12 pb-16 sm:grid-cols-2 lg:grid-cols-[1.2fr_repeat(3,1fr)] lg:items-start">
                 <div className="flex items-center gap-3">
-                    <p className="font-secondary text-[25px] font-medium leading-none tracking-tight text-green-light">
-                        OPEN{" "}
-                        <span className="text-orange">HAUS</span>
-
-                    </p>
-                    <span className="text-2xl font-light text-gray">|</span>
-                    <p className="text-[11px] leading-[1.2] font-medium tracking-[0.14em] text-gray uppercase">
-                        NEGÓCIOS
-                        <br />
-                        IMOBILIÁRIOS
-                    </p>
+                <a href="/" className="flex min-w-0 items-center gap-2 sm:gap-3" onClick={close}>
+                    <img src="/logoOpenHaus.png" alt="Logo Open Haus" className="w-27 md:w-35 lg:w-45" />
+                </a>
                 </div>
 
                 <div>
