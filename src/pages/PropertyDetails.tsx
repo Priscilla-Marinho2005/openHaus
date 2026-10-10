@@ -53,45 +53,43 @@ export default function PropertyDetails() {
         image: string;
     } | null>(null);
 
-    useEffect(() => {
-        window.scrollTo(0, 0);
+    
+useEffect(() => {
+    window.scrollTo(0, 0);
 
-        if (!slug) {
-            setMissing(true);
-            setLoading(false);
-            return;
-        }
+    let active = true;
 
-        let active = true;
-
-        setLoading(true);
-        setMissing(false);
-
-        const request = imovelId
-            ? fetchImovel(imovelId)
-            : fetchEmpreendimento(slug);
-
-        request
-            .then((data) => {
-                if (!active) return;
-
-                setItem(data);
-                setImageIndex(0);
-            })
-            .catch(() => {
-                if (!active) return;
-
-                setItem(null);
-                setMissing(true);
-            })
-            .finally(() => {
-                if (active) setLoading(false);
-            });
-
+    if (!slug) {
         return () => {
             active = false;
         };
-    }, [slug, imovelId]);
+    }
+
+    const request = imovelId
+        ? fetchImovel(imovelId)
+        : fetchEmpreendimento(slug);
+
+    request
+        .then((data) => {
+            if (!active) return;
+
+            setItem(data);
+            setImageIndex(0);
+            setMissing(false);
+            setLoading(false);
+        })
+        .catch(() => {
+            if (!active) return;
+
+            setItem(null);
+            setMissing(true);
+            setLoading(false);
+        });
+
+    return () => {
+        active = false;
+    };
+}, [slug, imovelId]);
 
     // Fecha a planta ao pressionar Esc
     useEffect(() => {
@@ -476,7 +474,7 @@ export default function PropertyDetails() {
             {/* Modal para visualizar a planta completa */}
             {selectedPlan && (
                 <div
-                    className="fixed inset-0 z-[100] flex items-center justify-center bg-black/90 p-4 backdrop-blur-md sm:p-8"
+                    className="fixed inset-0 z-100 flex items-center justify-center bg-black/90 p-4 backdrop-blur-md sm:p-8"
                     onClick={() => setSelectedPlan(null)}
                     role="dialog"
                     aria-modal="true"
