@@ -16,10 +16,10 @@ const testimonials = [
         quote: "A open Haus foi uma excelente empresa na solução da busca pela minha casa própria, profissionais atenciosos e me ajudaram a encontrar a melhor opção para mim, recomendo Muito essa empresa e seus profissionais!",
     },
     {
-        url: "https://share.google/zh6WJfMaTkzKHCcXP",
-        name: "Denis Henrique",
+        url: "https://share.google/klomfNMAjNtvissd2",
+        name: "Dayene Mota",
         context: "Avaliação no Google",
-        quote: "Ótimo atendimento!",
+        quote: "Denis foi extremamente profissional, transparente e prestativo. Excelente experiência, recomendo!",
     },
     {
         url: "https://share.google/Bd6pSFoPzQRLorMjC",
