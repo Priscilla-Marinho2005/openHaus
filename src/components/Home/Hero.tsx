@@ -2,13 +2,16 @@ import { FiArrowRight } from "react-icons/fi";
 
 export default function Hero() {
     return (
-        <header className="relative flex min-h-0 items-center overflow-hidden bg-primary px-5 pb-16 pt-32 text-white sm:px-10 lg:min-h-screen lg:px-35 lg:pb-16 lg:pt-20">
-            <div className="pointer-events-none absolute inset-0 z-0">
-                <img
-                    src="/cittaJoseRufino.png"
-                    alt="Empreendimento Citta José Ruffino ao entardecer"
-                    className="cine-photo h-full w-full object-cover object-[70%_center] lg:object-center"
-                />
+        <header className="relative flex min-h-svh items-center overflow-hidden bg-primary px-5 pb-16 pt-32 text-white sm:px-10 lg:px-35 lg:pb-16 lg:pt-20">
+            <div className="pointer-events-none absolute inset-0 z-0 overflow-hidden">
+                <div className="cine-photo absolute inset-0">
+                    <img
+                        src="/cittaJoseRufino.png"
+                        alt="Empreendimento Citta José Ruffino ao entardecer"
+                        fetchPriority="high"
+                        className="absolute inset-0 h-full w-full object-cover object-[70%_center] lg:object-center"
+                    />
+                </div>
                 <div className="absolute inset-0 bg-primary/70 lg:hidden" />
                 <div className="absolute inset-0 hidden bg-linear-to-r from-primary/60 via-primary/10 to-transparent lg:block" />
             </div>
