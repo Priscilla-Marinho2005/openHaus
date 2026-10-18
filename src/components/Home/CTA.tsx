@@ -4,27 +4,27 @@ export default function CTA() {
     return (
         <section id="contato" className="relative overflow-hidden border-t border-white/10 bg-primary px-10 py-28 text-center text-white lg:px-40">
             <div className="relative z-10 mx-auto flex max-w-3xl flex-col items-center gap-6">
-                <h2 className="font-secondary text-4xl font-bold tracking-tight uppercase sm:text-5xl lg:text-6xl">
+                <h2 data-reveal className="reveal font-secondary text-4xl font-bold tracking-tight uppercase sm:text-5xl lg:text-6xl">
                     Seu próximo imóvel
                     <br />
                     começa aqui.
                 </h2>
-                <p className="max-w-md text-sm leading-relaxed text-gray">
+                <p data-reveal data-reveal-delay="100" className="reveal max-w-md text-sm leading-relaxed text-gray">
                     Encontre imóveis e oportunidades alinhadas ao que você procura.
                 </p>
-                <div className="mt-2 flex flex-wrap items-center justify-center gap-4">
+                <div data-reveal data-reveal-delay="180" className="reveal mt-2 flex flex-wrap items-center justify-center gap-4">
                     <a
                         href="https://wa.me/558185399988"
                         target="_blank"
                         rel="noreferrer"
-                        className="inline-flex items-center gap-2 rounded-md bg-secondary px-6 py-3.5 text-sm font-semibold tracking-wide text-white uppercase transition hover:bg-orange"
+                        className="btn-lift inline-flex items-center gap-2 rounded-md bg-secondary px-6 py-3.5 text-sm font-semibold tracking-wide text-white uppercase hover:bg-orange"
                     >
                         Falar com a Open Haus
                         <FiArrowRight className="text-base" />
                     </a>
                     <a
                         href="#imoveis"
-                        className="rounded-md border border-white/40 px-6 py-3.5 text-sm font-semibold tracking-wide text-white uppercase transition hover:bg-white/10"
+                        className="btn-lift rounded-md border border-white/40 px-6 py-3.5 text-sm font-semibold tracking-wide text-white uppercase hover:bg-white/10"
                     >
                         Ver empreendimentos
                     </a>

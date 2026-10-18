@@ -75,3 +75,95 @@
     font-family: var(--font-primary);
   }
 }
+
+.reveal {
+  opacity: 0;
+  transform: translateY(32px);
+  transition:
+    opacity 0.8s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+  transition-delay: var(--reveal-delay, 0ms);
+}
+
+.reveal.is-in {
+  opacity: 1;
+  transform: none;
+}
+
+.reveal-fade {
+  transform: none;
+}
+
+@keyframes cine-zoom {
+  from {
+    opacity: 0;
+    transform: scale(1.12);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes cine-rise {
+  from {
+    opacity: 0;
+    transform: translateY(36px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.cine-photo {
+  animation: cine-zoom 2.6s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.cine-rise {
+  animation: cine-rise 0.9s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.btn-lift {
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease,
+    background-color 0.2s ease,
+    color 0.2s ease,
+    border-color 0.2s ease;
+}
+
+.btn-lift:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 22px rgba(0, 0, 0, 0.22);
+}
+
+.btn-lift:active {
+  transform: translateY(0) scale(0.98);
+  box-shadow: none;
+}
+
+.search-field {
+  transition: background-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.search-field:focus-within {
+  background-color: rgb(255 255 255 / 0.06);
+  box-shadow: inset 0 0 0 1px #ff6600;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .reveal,
+  .cine-photo,
+  .cine-rise {
+    opacity: 1;
+    transform: none;
+    animation: none;
+    transition: none;
+  }
+
+  .btn-lift:hover,
+  .btn-lift:active {
+    transform: none;
+  }
+}

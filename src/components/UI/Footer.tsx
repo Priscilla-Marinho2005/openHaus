@@ -5,13 +5,13 @@ export default function Footer() {
     return (
         <footer className="border-t border-white/10 bg-primary px-10 pt-16 text-white lg:px-25">
             <div className="grid gap-12 pb-16 sm:grid-cols-2 lg:grid-cols-[1.2fr_repeat(3,1fr)] lg:items-start">
-                <div className="flex items-center gap-3">
+                <div data-reveal className="reveal flex items-center gap-3">
                 <a href="/" className="flex min-w-0 items-center gap-2 sm:gap-3" onClick={close}>
                     <img src="/logoOpenHaus.png" alt="Logo Open Haus" className="w-27 md:w-35 lg:w-45" />
                 </a>
                 </div>
 
-                <div>
+                <div data-reveal data-reveal-delay="80" className="reveal">
                     <h3 className="mb-5 text-xs font-semibold tracking-[0.18em] text-secondary uppercase">
                         Open Haus
                     </h3>
@@ -19,6 +19,11 @@ export default function Footer() {
                         <li>
                             <a href="/#about" className="transition hover:text-white">
                                 Sobre nós
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/#como-funciona" className="transition hover:text-white">
+                                Como funciona
                             </a>
                         </li>
                         <li>
@@ -39,7 +44,7 @@ export default function Footer() {
                     </ul>
                 </div>
 
-                <div>
+                <div data-reveal data-reveal-delay="160" className="reveal">
                     <h3 className="mb-5 text-xs font-semibold tracking-[0.18em] text-secondary uppercase">
                         Atendimento
                     </h3>
@@ -67,7 +72,7 @@ export default function Footer() {
                     </ul>
                 </div>
 
-                <div>
+                <div data-reveal data-reveal-delay="240" className="reveal">
                     <h3 className="mb-5 text-xs font-semibold tracking-[0.18em] text-secondary uppercase">
                         Redes
                     </h3>

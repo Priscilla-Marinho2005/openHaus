@@ -69,7 +69,7 @@ export default function Testimonials() {
             className="scroll-mt-28 bg-primary px-10 py-24 text-white lg:px-40"
         >
             <div className="mb-12 flex items-end justify-between gap-6">
-                <div className="flex flex-col gap-4">
+                <div data-reveal className="reveal flex flex-col gap-4">
                     <span className="flex items-center gap-3">
                         <span className="h-px w-10 shrink-0 bg-secondary" />
                         <p className="text-xs font-medium tracking-[0.22em] text-secondary uppercase">
@@ -85,7 +85,7 @@ export default function Testimonials() {
                     </p>
                 </div>
 
-                <div className="hidden items-center gap-3 sm:flex">
+                <div data-reveal data-reveal-delay="120" className="reveal hidden items-center gap-3 sm:flex">
                     <button
                         type="button"
                         onClick={prev}
@@ -106,7 +106,9 @@ export default function Testimonials() {
             </div>
 
             <div
-                className="-mx-3 overflow-hidden"
+                data-reveal
+                data-reveal-delay="160"
+                className="reveal -mx-3 overflow-hidden"
                 onMouseEnter={() => setPaused(true)}
                 onMouseLeave={() => setPaused(false)}
             >

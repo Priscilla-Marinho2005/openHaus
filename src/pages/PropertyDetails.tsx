@@ -229,13 +229,15 @@ useEffect(() => {
                         <div className="grid items-start gap-10 lg:grid-cols-[1.15fr_0.85fr]">
                             {/* Galeria de imagens */}
                             <div>
-                                <div className="relative overflow-hidden rounded-2xl bg-white/5">
+                                <div className="relative h-80 overflow-hidden rounded-2xl bg-white/5 sm:h-105 lg:h-130">
                                     {images[imageIndex] ? (
-                                        <img
-                                            src={images[imageIndex]}
-                                            alt={`${item.nome} - foto ${imageIndex + 1}`}
-                                            className="h-80 w-full object-cover sm:h-105 lg:h-130"
-                                        />
+                                        <div data-parallax className="h-[118%] -mt-[9%]">
+                                            <img
+                                                src={images[imageIndex]}
+                                                alt={`${item.nome} - foto ${imageIndex + 1}`}
+                                                className="h-full w-full object-cover"
+                                            />
+                                        </div>
                                     ) : (
                                         <div className="h-80 w-full sm:h-105 lg:h-130" />
                                     )}
@@ -361,7 +363,7 @@ useEffect(() => {
                                     href={whatsappUrl}
                                     target="_blank"
                                     rel="noreferrer"
-                                    className="inline-flex items-center justify-center gap-2 rounded-md bg-secondary px-6 py-3.5 text-sm font-semibold tracking-wide text-white uppercase transition hover:bg-orange"
+                                    className="btn-lift inline-flex items-center justify-center gap-2 rounded-md bg-secondary px-6 py-3.5 text-sm font-semibold tracking-wide text-white uppercase hover:bg-orange"
                                 >
                                     Falar sobre este imóvel
                                     <FiArrowRight />

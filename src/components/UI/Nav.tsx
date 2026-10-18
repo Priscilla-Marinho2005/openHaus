@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 
 const links = [
     { href: "/#about", label: "Sobre nós" },
+    { href: "/#como-funciona", label: "Como funciona" },
     { href: "/#imoveis", label: "Imóveis" },
     { href: "/#depoimentos", label: "Depoimentos" },
 ];
@@ -68,7 +69,7 @@ export default function Nav() {
                             href="https://wa.me/558185399988"
                             target="_blank"
                             rel="noreferrer"
-                            className="rounded-md bg-secondary px-3.5 py-2 font-medium text-primary hover:text-white"
+                            className="btn-lift rounded-md bg-secondary px-3.5 py-2 font-medium text-primary hover:bg-orange hover:text-white"
                         >
                             Fale conosco
                         </a>
@@ -123,7 +124,7 @@ export default function Nav() {
                             target="_blank"
                             rel="noreferrer"
                             onClick={close}
-                            className="inline-flex rounded-md bg-secondary px-3.5 py-2 text-sm font-medium text-primary"
+                            className="btn-lift inline-flex rounded-md bg-secondary px-3.5 py-2 text-sm font-medium text-primary hover:bg-orange hover:text-white"
                         >
                             Fale conosco
                         </a>

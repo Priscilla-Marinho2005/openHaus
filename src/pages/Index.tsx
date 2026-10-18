@@ -1,6 +1,7 @@
 import Nav from "../components/UI/Nav";
 import Hero from "../components/Home/Hero";
 import About from "../components/Home/About";
+import Highlights from "../components/Home/Highlights";
 import Properties from "../components/Home/Properties";
 import Testimonials from "../components/Home/Testimonials";
 import CTA from "../components/Home/CTA";
@@ -12,6 +13,7 @@ export default function Index() {
             <Nav />
             <Hero />
             <About />
+            <Highlights />
             <Properties />
             <Testimonials />
             <CTA />

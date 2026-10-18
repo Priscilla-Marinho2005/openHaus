@@ -8,20 +8,22 @@ import {
     type CatalogCard,
 } from "../../lib/catalog";
 
-export default function PropertyCard({ item }: { item: CatalogCard }) {
+export default function PropertyCard({ item, parallax = false }: { item: CatalogCard; parallax?: boolean }) {
     const image = item.imagens[0] ?? "";
     return (
         <Link
             to={`/imoveis/${item.slug}`}
-            className="group flex min-h-130 cursor-pointer flex-col overflow-hidden rounded-2xl border border-white/10 bg-green/40 shadow-[0_8px_32px_rgba(0,0,0,0.25)] backdrop-blur-xl transition duration-300 hover:-translate-y-1 hover:border-white/20 hover:bg-green/50"
+            className="group flex min-h-130 cursor-pointer flex-col overflow-hidden rounded-2xl border border-white/10 bg-green/40 shadow-[0_8px_24px_rgba(0,0,0,0.18)] backdrop-blur-xl transition duration-300 hover:-translate-y-1.5 hover:border-white/20 hover:bg-green/50 hover:shadow-[0_22px_44px_rgba(0,0,0,0.38)]"
         >
             <div className="relative h-72 overflow-hidden bg-white/5">
                 {image ? (
-                    <img
-                        src={image}
-                        alt={item.nome}
-                        className="h-full w-full object-cover transition duration-500 group-hover:scale-[1.04]"
-                    />
+                    <div data-parallax={parallax ? "" : undefined} className={parallax ? "h-[118%] -mt-[9%]" : "h-full"}>
+                        <img
+                            src={image}
+                            alt={item.nome}
+                            className="h-full w-full object-cover transition duration-500 ease-out group-hover:scale-[1.03]"
+                        />
+                    </div>
                 ) : null}
                 <span className="absolute top-4 left-4 rounded-full bg-green px-3.5 py-1.5 text-[10px] font-semibold tracking-[0.14em] text-white uppercase">
                     {item.badge}
@@ -63,9 +65,9 @@ export default function PropertyCard({ item }: { item: CatalogCard }) {
                     </span>
                 </div>
 
-                <span className="mt-auto inline-flex items-center justify-between gap-2 text-xs font-semibold tracking-[0.12em] text-white uppercase">
+                <span className="mt-auto inline-flex items-center justify-between gap-2 rounded-md border border-white/15 px-4 py-3 text-xs font-semibold tracking-[0.12em] text-white uppercase transition duration-300 group-hover:border-secondary group-hover:bg-secondary group-hover:text-primary">
                     Conhecer {item.nome}
-                    <FiArrowRight className="text-base text-secondary transition duration-300 group-hover:translate-x-1" />
+                    <FiArrowRight className="text-base text-secondary transition duration-300 group-hover:translate-x-1 group-hover:text-primary" />
                 </span>
             </div>
         </Link>
