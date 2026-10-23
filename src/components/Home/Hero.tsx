@@ -23,12 +23,12 @@ export default function Hero() {
                 <div className="flex max-w-xl flex-col gap-8">
                     <span className="cine-rise flex items-center gap-3" style={{ animationDelay: "0.35s" }}>
                         <span className="h-px w-10 shrink-0 bg-secondary"></span>
-                        <h1 className="text-xs font-medium tracking-[0.22em] text-secondary uppercase">
+                        <p className="text-xs font-medium tracking-[0.22em] text-secondary uppercase">
                             OPEN HAUS NEGÓCIOS IMOBILIÁRIOS
-                        </h1>
+                        </p>
                     </span>
 
-                    <h2
+                    <h1
                         className="cine-rise font-secondary text-4xl font-bold tracking-tight sm:text-5xl lg:text-6xl xl:text-[4.25rem]"
                         style={{ animationDelay: "0.55s" }}
                     >
@@ -36,7 +36,7 @@ export default function Hero() {
                         <span className="text-secondary">imóvel </span>
                         novo começa aqui
                         <span className="inline-block origin-bottom animate-jump text-secondary">!</span>
-                    </h2>
+                    </h1>
                     <p
                         className="cine-rise max-w-md text-base leading-relaxed text-gray"
                         style={{ animationDelay: "0.95s" }}

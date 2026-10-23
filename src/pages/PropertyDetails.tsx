@@ -1,7 +1,7 @@
 
 import { useEffect, useMemo, useState } from "react";
 
-import { Link, Navigate, useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 
 import {
     FiArrowLeft,
@@ -16,6 +16,7 @@ import { LuBath, LuBedDouble } from "react-icons/lu";
 
 import { TbRulerMeasure } from "react-icons/tb";
 
+import Seo from "../components/Seo";
 import Nav from "../components/UI/Nav";
 
 import Footer from "../components/UI/Footer";
@@ -31,6 +32,7 @@ import {
     type CatalogCard,
     type EmpreendimentoPublico,
 } from "../lib/catalog";
+import { SITE_NAME, absoluteUrl } from "../lib/site";
 
 export default function PropertyDetails() {
     const { slug } = useParams();
@@ -203,12 +205,72 @@ useEffect(() => {
         );
     };
 
+    const description = item
+        ? [
+              vitrine?.descricao,
+              vitrine?.headline,
+              [item.tipo, formatLocation(item), item.areaM2 ? `${item.areaM2} m²` : null]
+                  .filter(Boolean)
+                  .join(" · "),
+              formatBRL(item.valor),
+          ]
+              .filter(Boolean)
+              .join(" ")
+              .slice(0, 300)
+        : "Imóvel OpenHaus";
+
+    const jsonLd = item
+        ? {
+              "@context": "https://schema.org",
+              "@type": item.kind === "empreendimento" ? "Residence" : "RealEstateListing",
+              name: item.nome,
+              description,
+              url: slug ? absoluteUrl(`/imoveis/${slug}`) : undefined,
+              image: item.imagens?.[0],
+              address: {
+                  "@type": "PostalAddress",
+                  streetAddress: item.endereco || undefined,
+                  addressLocality: item.cidade || item.localidade || undefined,
+                  addressRegion: item.estado || undefined,
+                  addressCountry: "BR",
+              },
+          }
+        : null;
+
     if (!loading && missing) {
-        return <Navigate to="/#imoveis" replace />;
+        return (
+            <div className="bg-primary text-white">
+                <Seo
+                    title="Imóvel não encontrado"
+                    description="Este imóvel não está mais disponível no catálogo da OpenHaus."
+                    path={slug ? `/imoveis/${slug}` : "/"}
+                    noindex
+                />
+                <Nav />
+                <main className="px-5 pt-32 pb-20 sm:px-10 lg:px-25">
+                    <h1 className="font-secondary text-3xl font-bold">Imóvel não encontrado</h1>
+                    <p className="mt-4 max-w-lg text-gray">
+                        Esse endereço não corresponde a um imóvel publicado. Veja as oportunidades atuais.
+                    </p>
+                    <Link to="/#imoveis" className="mt-8 inline-flex items-center gap-2 text-secondary">
+                        <FiArrowLeft />
+                        Voltar aos imóveis
+                    </Link>
+                </main>
+                <Footer />
+            </div>
+        );
     }
 
     return (
         <div className="bg-primary text-white">
+            <Seo
+                title={item ? `${item.nome} | ${SITE_NAME}` : "Imóvel"}
+                description={description}
+                path={slug ? `/imoveis/${slug}` : "/"}
+                image={item?.imagens?.[0]}
+                jsonLd={jsonLd}
+            />
             <Nav />
 
             <main className="px-5 pt-32 pb-20 sm:px-10 lg:px-25">
