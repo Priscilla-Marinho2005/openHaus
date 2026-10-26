@@ -1,6 +1,6 @@
 export const SITE_URL = (
   (import.meta.env.VITE_SITE_URL as string | undefined) ||
-  "https://openhaus-delta.vercel.app"
+  "https://www.openhausimob.com.br"
 ).replace(/\/$/, "");
 
 export const SITE_NAME = "OpenHaus Negócios Imobiliários";
