@@ -1,4 +1,7 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://openhaus-delta.vercel.app/sitemap.xml
+User-agent: OAI-SearchBot
+Allow: /
+
+Sitemap: https://www.openhausimob.com.br/sitemap.xml
