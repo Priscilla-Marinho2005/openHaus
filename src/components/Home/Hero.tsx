@@ -1,15 +1,39 @@
+import { useEffect, useRef, useState } from "react";
 import { FiArrowRight } from "react-icons/fi";
 
 export default function Hero() {
+    const photoRef = useRef<HTMLImageElement>(null);
+    const [photoReady, setPhotoReady] = useState(false);
+
+    useEffect(() => {
+        const photo = photoRef.current;
+        if (photo?.complete && photo.naturalWidth > 0) {
+            setPhotoReady(true);
+        }
+    }, []);
+
     return (
         <header className="relative flex min-h-svh items-center overflow-hidden bg-primary px-5 pb-16 pt-32 text-white sm:px-10 lg:px-35 lg:pb-16 lg:pt-20">
             <div className="pointer-events-none absolute inset-0 z-0 overflow-hidden">
                 <div className="cine-photo absolute inset-0">
                     <img
-                        src="/cittaJoseRufino.png"
+                        src="/cittaJoseRufino-tiny.webp"
+                        alt=""
+                        aria-hidden="true"
+                        className="absolute inset-0 h-full w-full scale-110 object-cover object-[70%_center] blur-2xl lg:object-center"
+                    />
+                    <img
+                        ref={photoRef}
+                        src="/cittaJoseRufino.webp"
                         alt="Empreendimento Citta José Ruffino ao entardecer"
+                        width={1885}
+                        height={834}
                         fetchPriority="high"
-                        className="absolute inset-0 h-full w-full object-cover object-[70%_center] lg:object-center"
+                        decoding="async"
+                        onLoad={() => setPhotoReady(true)}
+                        className={`absolute inset-0 h-full w-full object-cover object-[70%_center] transition-opacity duration-700 lg:object-center ${
+                            photoReady ? "opacity-100" : "opacity-0"
+                        }`}
                     />
                 </div>
                 <div className="absolute inset-0 bg-primary/70 lg:hidden" />
